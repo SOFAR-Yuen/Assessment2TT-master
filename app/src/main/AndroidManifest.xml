@@ -33,13 +33,13 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity
-            android:name=".activities.HomeworksActivity"
-            android:label="@string/homeworks"
+            android:name=".activities.TasksActivity"
+            android:label="@string/tasks"
             android:parentActivityName=".activities.MainActivity" />
 
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
-            android:value=".activities.HomeworksActivity" />
+            android:value=".activities.TasksActivity" />
 
         <activity
             android:name=".activities.NotesActivity"
@@ -50,8 +50,8 @@
             android:label="Notes"
             android:parentActivityName=".activities.NotesActivity" />
         <activity
-            android:name=".activities.TeachersActivity"
-            android:label="Teachers"
+            android:name=".activities.ContactsActivity"
+            android:label="@string/contacts"
             android:parentActivityName=".activities.MainActivity" />
         <activity
             android:name=".activities.SettingsActivity"
@@ -62,8 +62,8 @@
                 android:value=".activities.MainActivity" />
         </activity>
         <activity
-            android:name=".activities.ExamsActivity"
-            android:label="Exams"
+            android:name=".activities.EventsActivity"
+            android:label="@string/events"
             android:parentActivityName=".activities.MainActivity" />
 
         <receiver

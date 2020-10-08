@@ -3,13 +3,13 @@ package com.ulan.timetable.model;
 /**
  * Created by Ulan on 07.10.2018.
  */
-public class Teacher {
+public class Contact {
     private String name, post, phonenumber, email;
     private int id, color;
 
-    public Teacher() {
+    public Contact() {
     }
-    public Teacher(String name, String post, String phonenumber, String email, int color) {
+    public Contact(String name, String post, String phonenumber, String email, int color) {
         this.name = name;
         this.post = post;
         this.phonenumber = phonenumber;

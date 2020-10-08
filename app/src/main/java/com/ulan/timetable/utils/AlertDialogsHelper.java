@@ -19,18 +19,18 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.ulan.timetable.adapters.ExamsAdapter;
-import com.ulan.timetable.adapters.FragmentsTabAdapter;
-import com.ulan.timetable.adapters.HomeworksAdapter;
-import com.ulan.timetable.adapters.NotesAdapter;
-import com.ulan.timetable.adapters.TeachersAdapter;
-import com.ulan.timetable.adapters.WeekAdapter;
-import com.ulan.timetable.model.Exam;
-import com.ulan.timetable.model.Homework;
-import com.ulan.timetable.model.Note;
-import com.ulan.timetable.model.Teacher;
-import com.ulan.timetable.model.Week;
 import com.ulan.timetable.R;
+import com.ulan.timetable.adapters.ContactsAdapter;
+import com.ulan.timetable.adapters.EventsAdapter;
+import com.ulan.timetable.adapters.FragmentsTabAdapter;
+import com.ulan.timetable.adapters.NotesAdapter;
+import com.ulan.timetable.adapters.TasksAdapter;
+import com.ulan.timetable.adapters.WeekAdapter;
+import com.ulan.timetable.model.Contact;
+import com.ulan.timetable.model.Events;
+import com.ulan.timetable.model.Note;
+import com.ulan.timetable.model.Task;
+import com.ulan.timetable.model.Week;
 
 import org.xdty.preference.colorpicker.ColorPickerDialog;
 import org.xdty.preference.colorpicker.ColorPickerSwatch;
@@ -53,7 +53,7 @@ public class AlertDialogsHelper {
         final EditText subject = alertLayout.findViewById(R.id.subject_dialog);
         editTextHashs.put(R.string.subject, subject);
         final EditText teacher = alertLayout.findViewById(R.id.teacher_dialog);
-        editTextHashs.put(R.string.teacher, teacher);
+        editTextHashs.put(R.string.contact, teacher);
         final EditText room = alertLayout.findViewById(R.id.room_dialog);
         editTextHashs.put(R.string.room, room);
         final TextView from_time = alertLayout.findViewById(R.id.from_time);
@@ -185,7 +185,7 @@ public class AlertDialogsHelper {
         final EditText subject = alertLayout.findViewById(R.id.subject_dialog);
         editTextHashs.put(R.string.subject, subject);
         final EditText teacher = alertLayout.findViewById(R.id.teacher_dialog);
-        editTextHashs.put(R.string.teacher, teacher);
+        editTextHashs.put(R.string.contact, teacher);
         final EditText room = alertLayout.findViewById(R.id.room_dialog);
         editTextHashs.put(R.string.room, room);
         final TextView from_time = alertLayout.findViewById(R.id.from_time);
@@ -315,20 +315,20 @@ public class AlertDialogsHelper {
         });
     }
 
-    public static void getEditHomeworkDialog(final Activity activity, final View alertLayout, final ArrayList<Homework> adapter, final ListView listView, int listposition) {
+    public static void getEditHomeworkDialog(final Activity activity, final View alertLayout, final ArrayList<Task> adapter, final ListView listView, int listposition) {
         final HashMap<Integer, EditText> editTextHashs = new HashMap<>();
-        final EditText subject = alertLayout.findViewById(R.id.subjecthomework);
+        final EditText subject = alertLayout.findViewById(R.id.subjecttask);
         editTextHashs.put(R.string.subject, subject);
-        final EditText description = alertLayout.findViewById(R.id.descriptionhomework);
+        final EditText description = alertLayout.findViewById(R.id.descriptiontask);
         editTextHashs.put(R.string.desctiption, description);
-        final TextView date = alertLayout.findViewById(R.id.datehomework);
+        final TextView date = alertLayout.findViewById(R.id.datetask);
         final Button select_color = alertLayout.findViewById(R.id.select_color);
-        final Homework homework = adapter.get(listposition);
+        final Task task = adapter.get(listposition);
 
-        subject.setText(homework.getSubject());
-        description.setText(homework.getDescription());
-        date.setText(homework.getDate());
-        select_color.setBackgroundColor(homework.getColor() != 0 ? homework.getColor() : Color.WHITE);
+        subject.setText(task.getSubject());
+        description.setText(task.getDescription());
+        date.setText(task.getDate());
+        select_color.setBackgroundColor(task.getColor() != 0 ? task.getColor() : Color.WHITE);
 
         date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -341,7 +341,7 @@ public class AlertDialogsHelper {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         date.setText(String.format("%02d-%02d-%02d", year, month+1, dayOfMonth));
-                        homework.setDate(String.format("%02d-%02d-%02d", year, month+1, dayOfMonth));
+                        task.setDate(String.format("%02d-%02d-%02d", year, month+1, dayOfMonth));
                     }
                 }, mYear, mMonth, mdayofMonth);
                 datePickerDialog.setTitle(R.string.choose_date);
@@ -374,7 +374,7 @@ public class AlertDialogsHelper {
         });
 
         AlertDialog.Builder alert = new AlertDialog.Builder(activity);
-        alert.setTitle(R.string.edit_homework);
+        alert.setTitle(R.string.edit_task);
         alert.setCancelable(false);
         final Button cancel = alertLayout.findViewById(R.id.cancel);
         final Button save = alertLayout.findViewById(R.id.save);
@@ -403,28 +403,28 @@ public class AlertDialogsHelper {
                     Snackbar.make(alertLayout, R.string.deadline_snackbar, Snackbar.LENGTH_LONG).show();
                 } else {
                     DbHelper dbHelper = new DbHelper(activity);
-                    HomeworksAdapter homeworksAdapter = (HomeworksAdapter) listView.getAdapter();
+                    TasksAdapter tasksAdapter = (TasksAdapter) listView.getAdapter();
                     ColorDrawable buttonColor = (ColorDrawable) select_color.getBackground();
-                    homework.setSubject(subject.getText().toString());
-                    homework.setDescription(description.getText().toString());
-                    homework.setColor(buttonColor.getColor());
-                    dbHelper.updateHomework(homework);
-                    homeworksAdapter.notifyDataSetChanged();
+                    task.setSubject(subject.getText().toString());
+                    task.setDescription(description.getText().toString());
+                    task.setColor(buttonColor.getColor());
+                    dbHelper.updateTask(task);
+                    tasksAdapter.notifyDataSetChanged();
                     dialog.dismiss();
                 }
             }
             });
     }
 
-    public static void getAddHomeworkDialog(final Activity activity, final View alertLayout, final HomeworksAdapter adapter) {
+    public static void getAddHomeworkDialog(final Activity activity, final View alertLayout, final TasksAdapter adapter) {
         final HashMap<Integer, EditText> editTextHashs = new HashMap<>();
-        final EditText subject = alertLayout.findViewById(R.id.subjecthomework);
+        final EditText subject = alertLayout.findViewById(R.id.subjecttask);
         editTextHashs.put(R.string.subject, subject);
-        final EditText description = alertLayout.findViewById(R.id.descriptionhomework);
+        final EditText description = alertLayout.findViewById(R.id.descriptiontask);
         editTextHashs.put(R.string.desctiption, description);
-        final TextView date = alertLayout.findViewById(R.id.datehomework);
+        final TextView date = alertLayout.findViewById(R.id.datetask);
         final Button select_color = alertLayout.findViewById(R.id.select_color);
-        final Homework homework = new Homework();
+        final Task task = new Task();
 
         date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -437,7 +437,7 @@ public class AlertDialogsHelper {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         date.setText(String.format("%02d-%02d-%02d", year, month+1, dayOfMonth));
-                        homework.setDate(String.format("%02d-%02d-%02d", year, month+1, dayOfMonth));
+                        task.setDate(String.format("%02d-%02d-%02d", year, month+1, dayOfMonth));
                     }
                 }, mYear, mMonth, mdayofMonth);
                 datePickerDialog.setTitle(R.string.choose_date);
@@ -470,7 +470,7 @@ public class AlertDialogsHelper {
         });
 
         AlertDialog.Builder alert = new AlertDialog.Builder(activity);
-        alert.setTitle(R.string.add_homework);
+        alert.setTitle(R.string.add_task);
         final Button cancel = alertLayout.findViewById(R.id.cancel);
         final Button save = alertLayout.findViewById(R.id.save);
         alert.setView(alertLayout);
@@ -506,13 +506,13 @@ public class AlertDialogsHelper {
                 } else {
                     DbHelper dbHelper = new DbHelper(activity);
                     ColorDrawable buttonColor = (ColorDrawable) select_color.getBackground();
-                    homework.setSubject(subject.getText().toString());
-                    homework.setDescription(description.getText().toString());
-                    homework.setColor(buttonColor.getColor());
-                    dbHelper.insertHomework(homework);
+                    task.setSubject(subject.getText().toString());
+                    task.setDescription(description.getText().toString());
+                    task.setColor(buttonColor.getColor());
+                    dbHelper.insertTask(task);
 
                     adapter.clear();
-                    adapter.addAll(dbHelper.getHomework());
+                    adapter.addAll(dbHelper.getTask());
                     adapter.notifyDataSetChanged();
 
                     subject.getText().clear();
@@ -526,7 +526,7 @@ public class AlertDialogsHelper {
         });
     }
 
-    public static void getEditTeacherDialog(final Activity activity, final View alertLayout, final ArrayList<Teacher> adapter, final ListView listView, int listposition) {
+    public static void getEditTeacherDialog(final Activity activity, final View alertLayout, final ArrayList<Contact> adapter, final ListView listView, int listposition) {
         final HashMap<Integer, EditText> editTextHashs = new HashMap<>();
         final EditText name = alertLayout.findViewById(R.id.name_dialog);
         editTextHashs.put(R.string.name, name);
@@ -537,13 +537,13 @@ public class AlertDialogsHelper {
         final EditText email = alertLayout.findViewById(R.id.email_dialog);
         editTextHashs.put(R.string.email, email);
         final Button select_color = alertLayout.findViewById(R.id.select_color);
-        final Teacher teacher = adapter.get(listposition);
+        final Contact contact = adapter.get(listposition);
 
-        name.setText(teacher.getName());
-        post.setText(teacher.getPost());
-        phone_number.setText(teacher.getPhonenumber());
-        email.setText(teacher.getEmail());
-        select_color.setBackgroundColor(teacher.getColor() != 0 ? teacher.getColor() : Color.WHITE);
+        name.setText(contact.getName());
+        post.setText(contact.getPost());
+        phone_number.setText(contact.getPhonenumber());
+        email.setText(contact.getEmail());
+        select_color.setBackgroundColor(contact.getColor() != 0 ? contact.getColor() : Color.WHITE);
 
         select_color.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -570,7 +570,7 @@ public class AlertDialogsHelper {
         });
 
         final AlertDialog.Builder alert = new AlertDialog.Builder(activity);
-        alert.setTitle(R.string.edit_teacher);
+        alert.setTitle(R.string.edit_contact);
         alert.setCancelable(false);
         final Button cancel = alertLayout.findViewById(R.id.cancel);
         final Button save = alertLayout.findViewById(R.id.save);
@@ -597,22 +597,22 @@ public class AlertDialogsHelper {
                     }
                 } else {
                     DbHelper dbHelper = new DbHelper(activity);
-                    TeachersAdapter teachersAdapter = (TeachersAdapter) listView.getAdapter();
+                    ContactsAdapter contactsAdapter = (ContactsAdapter) listView.getAdapter();
                     ColorDrawable buttonColor = (ColorDrawable) select_color.getBackground();
-                    teacher.setName(name.getText().toString());
-                    teacher.setPost(post.getText().toString());
-                    teacher.setPhonenumber(phone_number.getText().toString());
-                    teacher.setEmail(email.getText().toString());
-                    teacher.setColor(buttonColor.getColor());
-                    dbHelper.updateTeacher(teacher);
-                    teachersAdapter.notifyDataSetChanged();
+                    contact.setName(name.getText().toString());
+                    contact.setPost(post.getText().toString());
+                    contact.setPhonenumber(phone_number.getText().toString());
+                    contact.setEmail(email.getText().toString());
+                    contact.setColor(buttonColor.getColor());
+                    dbHelper.updateContact(contact);
+                    contactsAdapter.notifyDataSetChanged();
                     dialog.dismiss();
                 }
             }
         });
     }
 
-    public static void getAddTeacherDialog(final Activity activity, final View alertLayout, final TeachersAdapter adapter) {
+    public static void getAddTeacherDialog(final Activity activity, final View alertLayout, final ContactsAdapter adapter) {
         final HashMap<Integer, EditText> editTextHashs = new HashMap<>();
         final EditText name = alertLayout.findViewById(R.id.name_dialog);
         editTextHashs.put(R.string.name, name);
@@ -623,7 +623,7 @@ public class AlertDialogsHelper {
         final EditText email = alertLayout.findViewById(R.id.email_dialog);
         editTextHashs.put(R.string.email, email);
         final Button select_color = alertLayout.findViewById(R.id.select_color);
-        final Teacher teacher = new Teacher();
+        final Contact contact = new Contact();
 
         select_color.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -650,7 +650,7 @@ public class AlertDialogsHelper {
         });
 
         final AlertDialog.Builder alert = new AlertDialog.Builder(activity);
-        alert.setTitle(activity.getResources().getString(R.string.add_teacher));
+        alert.setTitle(activity.getResources().getString(R.string.add_contact));
         alert.setCancelable(false);
         final Button cancel = alertLayout.findViewById(R.id.cancel);
         final Button save = alertLayout.findViewById(R.id.save);
@@ -684,15 +684,15 @@ public class AlertDialogsHelper {
                 } else {
                     DbHelper dbHelper = new DbHelper(activity);
                     ColorDrawable buttonColor = (ColorDrawable) select_color.getBackground();
-                    teacher.setName(name.getText().toString());
-                    teacher.setPost(post.getText().toString());
-                    teacher.setPhonenumber(phone_number.getText().toString());
-                    teacher.setEmail(email.getText().toString());
-                    teacher.setColor(buttonColor.getColor());
-                    dbHelper.insertTeacher(teacher);
+                    contact.setName(name.getText().toString());
+                    contact.setPost(post.getText().toString());
+                    contact.setPhonenumber(phone_number.getText().toString());
+                    contact.setEmail(email.getText().toString());
+                    contact.setColor(buttonColor.getColor());
+                    dbHelper.insertContact(contact);
 
                     adapter.clear();
-                    adapter.addAll(dbHelper.getTeacher());
+                    adapter.addAll(dbHelper.getContact());
                     adapter.notifyDataSetChanged();
 
                     name.getText().clear();
@@ -851,25 +851,25 @@ public class AlertDialogsHelper {
         });
     }
 
-    public static void getEditExamDialog(final Activity activity, final View alertLayout, final ArrayList<Exam> adapter, final ListView listView, int listposition) {
+    public static void getEditExamDialog(final Activity activity, final View alertLayout, final ArrayList<Events> adapter, final ListView listView, int listposition) {
         final HashMap<Integer, EditText> editTextHashs = new HashMap<>();
-        final EditText subject = alertLayout.findViewById(R.id.subjectexam_dialog);
+        final EditText subject = alertLayout.findViewById(R.id.subjectevent_dialog);
         editTextHashs.put(R.string.subject, subject);
         final EditText teacher = alertLayout.findViewById(R.id.teacherexam_dialog);
-        editTextHashs.put(R.string.teacher, teacher);
+        editTextHashs.put(R.string.contact, teacher);
         final EditText room = alertLayout.findViewById(R.id.roomexam_dialog);
         editTextHashs.put(R.string.room, room);
         final TextView date = alertLayout.findViewById(R.id.dateexam_dialog);
         final TextView time = alertLayout.findViewById(R.id.timeexam_dialog);
         final Button select_color = alertLayout.findViewById(R.id.select_color);
-        final Exam exam = adapter.get(listposition);
+        final Events events = adapter.get(listposition);
 
-        subject.setText(exam.getSubject());
-        teacher.setText(exam.getTeacher());
-        room.setText(exam.getRoom());
-        date.setText(exam.getDate());
-        time.setText(exam.getTime());
-        select_color.setBackgroundColor(exam.getColor());
+        subject.setText(events.getSubject());
+        teacher.setText(events.getTeacher());
+        room.setText(events.getRoom());
+        date.setText(events.getDate());
+        time.setText(events.getTime());
+        select_color.setBackgroundColor(events.getColor());
 
         date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -882,7 +882,7 @@ public class AlertDialogsHelper {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         date.setText(String.format("%02d-%02d-%02d", year, month+1, dayOfMonth));
-                        exam.setDate(String.format("%02d-%02d-%02d", year, month+1, dayOfMonth));
+                        events.setDate(String.format("%02d-%02d-%02d", year, month+1, dayOfMonth));
                     }
                 }, mYear, mMonth, mdayofMonth);
                 datePickerDialog.setTitle(R.string.choose_date);
@@ -903,7 +903,7 @@ public class AlertDialogsHelper {
                             public void onTimeSet(TimePicker view, int hourOfDay,
                                                   int minute) {
                                 time.setText(String.format("%02d:%02d", hourOfDay, minute));
-                                exam.setTime(String.format("%02d:%02d", hourOfDay, minute));
+                                events.setTime(String.format("%02d:%02d", hourOfDay, minute));
                             }
                         }, mHour, mMinute, true);
                 timePickerDialog.setTitle(R.string.choose_time);
@@ -969,15 +969,15 @@ public class AlertDialogsHelper {
                 } else {
                     DbHelper dbHelper = new DbHelper(activity);
                     ColorDrawable buttonColor = (ColorDrawable) select_color.getBackground();
-                    exam.setSubject(subject.getText().toString());
-                    exam.setTeacher(teacher.getText().toString());
-                    exam.setRoom(room.getText().toString());
-                    exam.setColor(buttonColor.getColor());
+                    events.setSubject(subject.getText().toString());
+                    events.setTeacher(teacher.getText().toString());
+                    events.setRoom(room.getText().toString());
+                    events.setColor(buttonColor.getColor());
 
-                    dbHelper.updateExam(exam);
+                    dbHelper.updateEvent(events);
 
-                    ExamsAdapter examsAdapter = (ExamsAdapter) listView.getAdapter();
-                    examsAdapter.notifyDataSetChanged();
+                    EventsAdapter eventsAdapter = (EventsAdapter) listView.getAdapter();
+                    eventsAdapter.notifyDataSetChanged();
 
                     dialog.dismiss();
                 }
@@ -985,18 +985,18 @@ public class AlertDialogsHelper {
         });
     }
 
-    public static void getAddExamDialog(final Activity activity, final View alertLayout, final ExamsAdapter adapter) {
+    public static void getAddExamDialog(final Activity activity, final View alertLayout, final EventsAdapter adapter) {
         final HashMap<Integer, EditText> editTextHashs = new HashMap<>();
-        final EditText subject = alertLayout.findViewById(R.id.subjectexam_dialog);
+        final EditText subject = alertLayout.findViewById(R.id.subjectevent_dialog);
         editTextHashs.put(R.string.subject, subject);
         final EditText teacher = alertLayout.findViewById(R.id.teacherexam_dialog);
-        editTextHashs.put(R.string.teacher, teacher);
+        editTextHashs.put(R.string.contact, teacher);
         final EditText room = alertLayout.findViewById(R.id.roomexam_dialog);
         editTextHashs.put(R.string.room, room);
         final TextView date = alertLayout.findViewById(R.id.dateexam_dialog);
         final TextView time = alertLayout.findViewById(R.id.timeexam_dialog);
         final Button select_color = alertLayout.findViewById(R.id.select_color);
-        final Exam exam = new Exam();
+        final Events events = new Events();
 
         date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1009,7 +1009,7 @@ public class AlertDialogsHelper {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         date.setText(String.format("%02d-%02d-%02d", year, month+1, dayOfMonth));
-                        exam.setDate(String.format("%02d-%02d-%02d", year, month+1, dayOfMonth));
+                        events.setDate(String.format("%02d-%02d-%02d", year, month+1, dayOfMonth));
                     }
                 }, mYear, mMonth, mdayofMonth);
                 datePickerDialog.setTitle(R.string.choose_date);
@@ -1030,7 +1030,7 @@ public class AlertDialogsHelper {
                             public void onTimeSet(TimePicker view, int hourOfDay,
                                                   int minute) {
                                 time.setText(String.format("%02d:%02d", hourOfDay, minute));
-                                exam.setTime(String.format("%02d:%02d", hourOfDay, minute));
+                                events.setTime(String.format("%02d:%02d", hourOfDay, minute));
                             }
                         }, mHour, mMinute, true);
                 timePickerDialog.setTitle(R.string.choose_time);
@@ -1102,15 +1102,15 @@ public class AlertDialogsHelper {
                 } else {
                     DbHelper dbHelper = new DbHelper(activity);
                     ColorDrawable buttonColor = (ColorDrawable) select_color.getBackground();
-                    exam.setSubject(subject.getText().toString());
-                    exam.setTeacher(teacher.getText().toString());
-                    exam.setRoom(room.getText().toString());
-                    exam.setColor(buttonColor.getColor());
+                    events.setSubject(subject.getText().toString());
+                    events.setTeacher(teacher.getText().toString());
+                    events.setRoom(room.getText().toString());
+                    events.setColor(buttonColor.getColor());
 
-                    dbHelper.insertExam(exam);
+                    dbHelper.insertEvent(events);
 
                     adapter.clear();
-                    adapter.addAll(dbHelper.getExam());
+                    adapter.addAll(dbHelper.getEvent());
                     adapter.notifyDataSetChanged();
 
                     subject.getText().clear();

@@ -14,8 +14,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.ulan.timetable.model.Teacher;
 import com.ulan.timetable.R;
+import com.ulan.timetable.model.Task;
 import com.ulan.timetable.utils.AlertDialogsHelper;
 import com.ulan.timetable.utils.DbHelper;
 
@@ -23,65 +23,61 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 /**
- * Created by Ulan on 08.10.2018.
+ * Created by Ulan on 21.09.2018.
  */
-public class TeachersAdapter extends ArrayAdapter<Teacher> {
+public class TasksAdapter extends ArrayAdapter<Task> {
 
     private Activity mActivity;
     private int mResource;
-    private ArrayList<Teacher> teacherlist;
-    private Teacher teacher;
+    private ArrayList<Task> tasklist;
+    private Task task;
     private ListView mListView;
 
     private static class ViewHolder {
-        TextView name;
-        TextView post;
-        TextView phonenumber;
-        TextView email;
+        TextView subject;
+        TextView description;
+        TextView date;
         CardView cardView;
         ImageView popup;
     }
 
-    public TeachersAdapter(Activity activity, ListView listView, int resource, ArrayList<Teacher> objects) {
+    public TasksAdapter(Activity activity, ListView listView, int resource, ArrayList<Task> objects) {
         super(activity, resource, objects);
         mActivity = activity;
         mListView = listView;
         mResource = resource;
-        teacherlist = objects;
+        tasklist = objects;
     }
 
     @NonNull
     @Override
     public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
-        String name = Objects.requireNonNull(getItem(position)).getName();
-        String post = Objects.requireNonNull(getItem(position)).getPost();
-        String phonenumber = Objects.requireNonNull(getItem(position)).getPhonenumber();
-        String email = Objects.requireNonNull(getItem(position)).getEmail();
+        String subject = Objects.requireNonNull(getItem(position)).getSubject();
+        String description = Objects.requireNonNull(getItem(position)).getDescription();
+        String date = Objects.requireNonNull(getItem(position)).getDate();
         int color = Objects.requireNonNull(getItem(position)).getColor();
 
-        teacher = new Teacher(name, post, phonenumber, email, color);
+        task = new Task(subject, description, date, color);
         final ViewHolder holder;
 
         if(convertView == null){
             LayoutInflater inflater = LayoutInflater.from(mActivity);
             convertView = inflater.inflate(mResource, parent, false);
-            holder= new ViewHolder();
-            holder.name = convertView.findViewById(R.id.nameteacher);
-            holder.post = convertView.findViewById(R.id.postteacher);
-            holder.phonenumber = convertView.findViewById(R.id.numberteacher);
-            holder.email = convertView.findViewById(R.id.emailteacher);
-            holder.cardView = convertView.findViewById(R.id.teacher_cardview);
+            holder = new ViewHolder();
+            holder.subject = convertView.findViewById(R.id.subjecttask);
+            holder.description = convertView.findViewById(R.id.descriptiontask);
+            holder.date = convertView.findViewById(R.id.datetask);
+            holder.cardView = convertView.findViewById(R.id.task_cardview);
             holder.popup = convertView.findViewById(R.id.popupbtn);
             convertView.setTag(holder);
         }
         else{
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.name.setText(teacher.getName());
-        holder.post.setText(teacher.getPost());
-        holder.phonenumber.setText(teacher.getPhonenumber());
-        holder.email.setText(teacher.getEmail());
-        holder.cardView.setCardBackgroundColor(teacher.getColor());
+        holder.subject.setText(task.getSubject());
+        holder.description.setText(task.getDescription());
+        holder.date.setText(task.getDate());
+        holder.cardView.setCardBackgroundColor(task.getColor());
         holder.popup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,15 +88,15 @@ public class TeachersAdapter extends ArrayAdapter<Teacher> {
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.delete_popup:
-                                db.deleteTeacherById(getItem(position));
-                                db.updateTeacher(getItem(position));
-                                teacherlist.remove(position);
+                                db.deleteTaskById(getItem(position));
+                                db.updateTask(getItem(position));
+                                tasklist.remove(position);
                                 notifyDataSetChanged();
                                 return true;
 
                             case R.id.edit_popup:
-                                final View alertLayout = mActivity.getLayoutInflater().inflate(R.layout.dialog_add_teacher, null);
-                                AlertDialogsHelper.getEditTeacherDialog(mActivity, alertLayout, teacherlist, mListView, position);
+                                final View alertLayout = mActivity.getLayoutInflater().inflate(R.layout.dialog_add_task, null);
+                                AlertDialogsHelper.getEditHomeworkDialog(mActivity, alertLayout, tasklist, mListView, position);
                                 notifyDataSetChanged();
                                 return true;
                             default:
@@ -117,25 +113,31 @@ public class TeachersAdapter extends ArrayAdapter<Teacher> {
         return convertView;
     }
 
-    public ArrayList<Teacher> getTeacherList() {
-        return teacherlist;
+    @Override
+    public long getItemId(int position) {
+        return super.getItemId(position);
     }
 
-    public Teacher getTeacher() {
-        return teacher;
+    public ArrayList<Task> getTaskList() {
+        return tasklist;
     }
 
-     private void hidePopUpMenu(ViewHolder holder) {
+    public Task getTask() {
+        return task;
+    }
+
+    private void hidePopUpMenu(ViewHolder holder) {
         SparseBooleanArray checkedItems = mListView.getCheckedItemPositions();
         if (checkedItems.size() > 0) {
             for (int i = 0; i < checkedItems.size(); i++) {
                 int key = checkedItems.keyAt(i);
                 if (checkedItems.get(key)) {
                     holder.popup.setVisibility(View.INVISIBLE);
-                    }
+                }
             }
         } else {
             holder.popup.setVisibility(View.VISIBLE);
         }
     }
 }
+

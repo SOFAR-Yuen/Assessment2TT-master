@@ -3,13 +3,13 @@ package com.ulan.timetable.model;
 /**
  * Created by Ulan on 21.09.2018.
  */
-public class Homework {
+public class Task {
     private String subject, description, date;
     private int id, color;
 
-    public Homework() {}
+    public Task() {}
 
-    public Homework(String subject, String description, String date, int color) {
+    public Task(String subject, String description, String date, int color) {
         this.subject = subject;
         this.description = description;
         this.date = date;

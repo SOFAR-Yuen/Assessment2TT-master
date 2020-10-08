@@ -3,13 +3,13 @@ package com.ulan.timetable.model;
 /**
  * Created by Ulan on 07.12.2018.
  */
-public class Exam {
+public class Events {
     private String subject, teacher, time, date, room;
     private int id, color;
 
-    public Exam() {}
+    public Events() {}
 
-    public Exam(String subject, String teacher, String time, String date, String room, int color) {
+    public Events(String subject, String teacher, String time, String date, String room, int color) {
         this.subject = subject;
         this.teacher = teacher;
         this.time = time;

@@ -1,8 +1,8 @@
 package com.ulan.timetable.activities;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.Menu;
@@ -12,25 +12,25 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
-import com.ulan.timetable.adapters.ExamsAdapter;
-import com.ulan.timetable.model.Exam;
 import com.ulan.timetable.R;
+import com.ulan.timetable.adapters.EventsAdapter;
+import com.ulan.timetable.model.Events;
 import com.ulan.timetable.utils.AlertDialogsHelper;
 import com.ulan.timetable.utils.DbHelper;
 
 import java.util.ArrayList;
 
-public class ExamsActivity extends AppCompatActivity {
+public class EventsActivity extends AppCompatActivity {
 
     private Context context = this;
     private ListView listView;
-    private ExamsAdapter adapter;
+    private EventsAdapter adapter;
     private DbHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_exams);
+        setContentView(R.layout.activity_events);
         initAll();
     }
 
@@ -42,8 +42,8 @@ public class ExamsActivity extends AppCompatActivity {
 
     private void setupAdapter() {
         db = new DbHelper(context);
-        listView = findViewById(R.id.examslist);
-        adapter = new ExamsAdapter(ExamsActivity.this, listView, R.layout.listview_exams_adapter, db.getExam());
+        listView = findViewById(R.id.eventlist);
+        adapter = new EventsAdapter(EventsActivity.this, listView, R.layout.listview_events_adapter, db.getEvent());
         listView.setAdapter(adapter);
     }
 
@@ -73,17 +73,17 @@ public class ExamsActivity extends AppCompatActivity {
             public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_delete:
-                        ArrayList<Exam> removelist = new ArrayList<>();
+                        ArrayList<Events> removelist = new ArrayList<>();
                         SparseBooleanArray checkedItems = listView.getCheckedItemPositions();
                         for (int i = 0; i < checkedItems.size(); i++) {
                             int key = checkedItems.keyAt(i);
                             if (checkedItems.get(key)) {
                                 db.deleteExamById(adapter.getItem(key));
-                                removelist.add(adapter.getExamList().get(key));
+                                removelist.add(adapter.getEventList().get(key));
                             }
                         }
-                        adapter.getExamList().removeAll(removelist);
-                        db.updateExam(adapter.getExam());
+                        adapter.getEventList().removeAll(removelist);
+                        db.updateEvent(adapter.getEvents());
                         adapter.notifyDataSetChanged();
                         mode.finish();
                         return true;
@@ -99,7 +99,7 @@ public class ExamsActivity extends AppCompatActivity {
     }
 
     private void setupCustomDialog() {
-        final View alertLayout = getLayoutInflater().inflate(R.layout.dialog_add_exam, null);
-        AlertDialogsHelper.getAddExamDialog(ExamsActivity.this, alertLayout, adapter);
+        final View alertLayout = getLayoutInflater().inflate(R.layout.dialog_add_event, null);
+        AlertDialogsHelper.getAddExamDialog(EventsActivity.this, alertLayout, adapter);
     }
 }

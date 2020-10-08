@@ -14,8 +14,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.ulan.timetable.model.Exam;
 import com.ulan.timetable.R;
+import com.ulan.timetable.model.Contact;
 import com.ulan.timetable.utils.AlertDialogsHelper;
 import com.ulan.timetable.utils.DbHelper;
 
@@ -23,68 +23,65 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 /**
- * Created by Ulan on 17.12.2018.
+ * Created by Ulan on 08.10.2018.
  */
-public class ExamsAdapter extends ArrayAdapter<Exam> {
+public class ContactsAdapter extends ArrayAdapter<Contact> {
 
     private Activity mActivity;
     private int mResource;
-    private ArrayList<Exam> examlist;
-    private Exam exam;
+    private ArrayList<Contact> contactlist;
+    private Contact contact;
     private ListView mListView;
 
     private static class ViewHolder {
-        TextView subject;
-        TextView teacher;
-        TextView room;
-        TextView date;
-        TextView time;
+        TextView name;
+        TextView post;
+        TextView phonenumber;
+        TextView email;
         CardView cardView;
         ImageView popup;
     }
 
-    public ExamsAdapter(Activity activity, ListView listView, int resource, ArrayList<Exam> objects) {
+    public ContactsAdapter(Activity activity, ListView listView, int resource, ArrayList<Contact> objects) {
         super(activity, resource, objects);
         mActivity = activity;
         mListView = listView;
         mResource = resource;
-        examlist = objects;
+        contactlist = objects;
     }
 
     @NonNull
     @Override
     public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
-        String subject = Objects.requireNonNull(getItem(position)).getSubject();
-        String teacher = Objects.requireNonNull(getItem(position)).getTeacher();
-        String room = Objects.requireNonNull(getItem(position)).getRoom();
-        String date = Objects.requireNonNull(getItem(position)).getDate();
-        String time = Objects.requireNonNull(getItem(position)).getTime();
+        String name = Objects.requireNonNull(getItem(position)).getName();
+        String post = Objects.requireNonNull(getItem(position)).getPost();
+        String phonenumber = Objects.requireNonNull(getItem(position)).getPhonenumber();
+        String email = Objects.requireNonNull(getItem(position)).getEmail();
         int color = Objects.requireNonNull(getItem(position)).getColor();
 
-        exam = new Exam(subject, teacher, date, time, room, color);
+        contact = new Contact(name, post, phonenumber, email, color);
         final ViewHolder holder;
 
-        if (convertView == null) {
+        if(convertView == null){
             LayoutInflater inflater = LayoutInflater.from(mActivity);
             convertView = inflater.inflate(mResource, parent, false);
-            holder = new ViewHolder();
-            holder.subject = convertView.findViewById(R.id.subjectexams);
-            holder.teacher = convertView.findViewById(R.id.teacherexams);
-            holder.room = convertView.findViewById(R.id.roomexams);
-            holder.date = convertView.findViewById(R.id.dateexams);
-            holder.time = convertView.findViewById(R.id.timeexams);
-            holder.cardView = convertView.findViewById(R.id.exams_cardview);
+            holder= new ViewHolder();
+            holder.name = convertView.findViewById(R.id.namecontact);
+            holder.post = convertView.findViewById(R.id.postcontact);
+            holder.phonenumber = convertView.findViewById(R.id.numbercontact);
+            holder.email = convertView.findViewById(R.id.emailcontact);
+            holder.cardView = convertView.findViewById(R.id.contact_cardview);
             holder.popup = convertView.findViewById(R.id.popupbtn);
             convertView.setTag(holder);
-        } else {
+        }
+        else{
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.subject.setText(exam.getSubject());
-        holder.teacher.setText(exam.getTeacher());
-        holder.room.setText(exam.getRoom());
-        holder.date.setText(exam.getDate());
-        holder.time.setText(exam.getTime());
-        holder.cardView.setCardBackgroundColor(exam.getColor());
+        holder.name.setText(contact.getName());
+        holder.post.setText(contact.getPost());
+        holder.phonenumber.setText(contact.getPhonenumber());
+        holder.email.setText(contact.getEmail());
+        holder.cardView.setCardBackgroundColor(contact.getColor());
         holder.popup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,15 +92,15 @@ public class ExamsAdapter extends ArrayAdapter<Exam> {
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.delete_popup:
-                                db.deleteExamById(getItem(position));
-                                db.updateExam(getItem(position));
-                                examlist.remove(position);
+                                db.deleteContactById(getItem(position));
+                                db.updateContact(getItem(position));
+                                contactlist.remove(position);
                                 notifyDataSetChanged();
                                 return true;
 
                             case R.id.edit_popup:
-                                final View alertLayout = mActivity.getLayoutInflater().inflate(R.layout.dialog_add_exam, null);
-                                AlertDialogsHelper.getEditExamDialog(mActivity, alertLayout, examlist, mListView, position);
+                                final View alertLayout = mActivity.getLayoutInflater().inflate(R.layout.dialog_add_contact, null);
+                                AlertDialogsHelper.getEditTeacherDialog(mActivity, alertLayout, contactlist, mListView, position);
                                 notifyDataSetChanged();
                                 return true;
                             default:
@@ -120,27 +117,22 @@ public class ExamsAdapter extends ArrayAdapter<Exam> {
         return convertView;
     }
 
-    @Override
-    public long getItemId(int position) {
-        return super.getItemId(position);
+    public ArrayList<Contact> getContactList() {
+        return contactlist;
     }
 
-    public ArrayList<Exam> getExamList() {
-        return examlist;
+    public Contact getContact() {
+        return contact;
     }
 
-    public Exam getExam() {
-        return exam;
-    }
-
-    private void hidePopUpMenu(ViewHolder holder) {
+     private void hidePopUpMenu(ViewHolder holder) {
         SparseBooleanArray checkedItems = mListView.getCheckedItemPositions();
         if (checkedItems.size() > 0) {
             for (int i = 0; i < checkedItems.size(); i++) {
                 int key = checkedItems.keyAt(i);
                 if (checkedItems.get(key)) {
                     holder.popup.setVisibility(View.INVISIBLE);
-                }
+                    }
             }
         } else {
             holder.popup.setVisibility(View.VISIBLE);

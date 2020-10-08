@@ -14,8 +14,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.ulan.timetable.model.Homework;
 import com.ulan.timetable.R;
+import com.ulan.timetable.model.Events;
 import com.ulan.timetable.utils.AlertDialogsHelper;
 import com.ulan.timetable.utils.DbHelper;
 
@@ -23,61 +23,68 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 /**
- * Created by Ulan on 21.09.2018.
+ * Created by Ulan on 17.12.2018.
  */
-public class HomeworksAdapter extends ArrayAdapter<Homework> {
+public class EventsAdapter extends ArrayAdapter<Events> {
 
     private Activity mActivity;
     private int mResource;
-    private ArrayList<Homework> homeworklist;
-    private Homework homework;
+    private ArrayList<Events> eventlist;
+    private Events events;
     private ListView mListView;
 
     private static class ViewHolder {
         TextView subject;
-        TextView description;
+        TextView teacher;
+        TextView room;
         TextView date;
+        TextView time;
         CardView cardView;
         ImageView popup;
     }
 
-    public HomeworksAdapter(Activity activity, ListView listView,  int resource, ArrayList<Homework> objects) {
+    public EventsAdapter(Activity activity, ListView listView, int resource, ArrayList<Events> objects) {
         super(activity, resource, objects);
         mActivity = activity;
         mListView = listView;
         mResource = resource;
-        homeworklist = objects;
+        eventlist = objects;
     }
 
     @NonNull
     @Override
     public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
         String subject = Objects.requireNonNull(getItem(position)).getSubject();
-        String description = Objects.requireNonNull(getItem(position)).getDescription();
+        String teacher = Objects.requireNonNull(getItem(position)).getTeacher();
+        String room = Objects.requireNonNull(getItem(position)).getRoom();
         String date = Objects.requireNonNull(getItem(position)).getDate();
+        String time = Objects.requireNonNull(getItem(position)).getTime();
         int color = Objects.requireNonNull(getItem(position)).getColor();
 
-        homework = new Homework(subject, description, date, color);
+        events = new Events(subject, teacher, date, time, room, color);
         final ViewHolder holder;
 
-        if(convertView == null){
+        if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(mActivity);
             convertView = inflater.inflate(mResource, parent, false);
             holder = new ViewHolder();
-            holder.subject = convertView.findViewById(R.id.subjecthomework);
-            holder.description = convertView.findViewById(R.id.descriptionhomework);
-            holder.date = convertView.findViewById(R.id.datehomework);
-            holder.cardView = convertView.findViewById(R.id.homeworks_cardview);
+            holder.subject = convertView.findViewById(R.id.subjectevents);
+            holder.teacher = convertView.findViewById(R.id.teacherevents);
+            holder.room = convertView.findViewById(R.id.roomevents);
+            holder.date = convertView.findViewById(R.id.dateevents);
+            holder.time = convertView.findViewById(R.id.timeevents);
+            holder.cardView = convertView.findViewById(R.id.exams_cardview);
             holder.popup = convertView.findViewById(R.id.popupbtn);
             convertView.setTag(holder);
-        }
-        else{
+        } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.subject.setText(homework.getSubject());
-        holder.description.setText(homework.getDescription());
-        holder.date.setText(homework.getDate());
-        holder.cardView.setCardBackgroundColor(homework.getColor());
+        holder.subject.setText(events.getSubject());
+        holder.teacher.setText(events.getTeacher());
+        holder.room.setText(events.getRoom());
+        holder.date.setText(events.getDate());
+        holder.time.setText(events.getTime());
+        holder.cardView.setCardBackgroundColor(events.getColor());
         holder.popup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,15 +95,15 @@ public class HomeworksAdapter extends ArrayAdapter<Homework> {
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.delete_popup:
-                                db.deleteHomeworkById(getItem(position));
-                                db.updateHomework(getItem(position));
-                                homeworklist.remove(position);
+                                db.deleteExamById(getItem(position));
+                                db.updateEvent(getItem(position));
+                                eventlist.remove(position);
                                 notifyDataSetChanged();
                                 return true;
 
                             case R.id.edit_popup:
-                                final View alertLayout = mActivity.getLayoutInflater().inflate(R.layout.dialog_add_homework, null);
-                                AlertDialogsHelper.getEditHomeworkDialog(mActivity, alertLayout, homeworklist, mListView, position);
+                                final View alertLayout = mActivity.getLayoutInflater().inflate(R.layout.dialog_add_event, null);
+                                AlertDialogsHelper.getEditExamDialog(mActivity, alertLayout, eventlist, mListView, position);
                                 notifyDataSetChanged();
                                 return true;
                             default:
@@ -118,12 +125,12 @@ public class HomeworksAdapter extends ArrayAdapter<Homework> {
         return super.getItemId(position);
     }
 
-    public ArrayList<Homework> getHomeworkList() {
-        return homeworklist;
+    public ArrayList<Events> getEventList() {
+        return eventlist;
     }
 
-    public Homework getHomework() {
-        return homework;
+    public Events getEvents() {
+        return events;
     }
 
     private void hidePopUpMenu(ViewHolder holder) {
@@ -140,4 +147,3 @@ public class HomeworksAdapter extends ArrayAdapter<Homework> {
         }
     }
 }
-

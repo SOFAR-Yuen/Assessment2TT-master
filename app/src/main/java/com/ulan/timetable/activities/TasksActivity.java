@@ -12,27 +12,27 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
-import com.ulan.timetable.adapters.HomeworksAdapter;
-import com.ulan.timetable.model.Homework;
 import com.ulan.timetable.R;
+import com.ulan.timetable.adapters.TasksAdapter;
+import com.ulan.timetable.model.Task;
 import com.ulan.timetable.utils.AlertDialogsHelper;
 import com.ulan.timetable.utils.DbHelper;
 
 import java.util.ArrayList;
 
 
-public class HomeworksActivity extends AppCompatActivity {
+public class TasksActivity extends AppCompatActivity {
 
     private Context context = this;
     private ListView listView;
-    private HomeworksAdapter adapter;
+    private TasksAdapter adapter;
     private DbHelper db;
     private int listposition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_homeworks);
+        setContentView(R.layout.activity_tasks);
         initAll();
     }
 
@@ -44,8 +44,8 @@ public class HomeworksActivity extends AppCompatActivity {
 
     private void setupAdapter() {
         db = new DbHelper(context);
-        listView = findViewById(R.id.homeworklist);
-        adapter = new HomeworksAdapter(HomeworksActivity.this, listView, R.layout.listview_homeworks_adapter, db.getHomework());
+        listView = findViewById(R.id.tasklist);
+        adapter = new TasksAdapter(TasksActivity.this, listView, R.layout.listview_tasks_adapter, db.getTask());
         listView.setAdapter(adapter);
     }
 
@@ -76,17 +76,17 @@ public class HomeworksActivity extends AppCompatActivity {
             public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_delete:
-                        ArrayList<Homework> removelist = new ArrayList<>();
+                        ArrayList<Task> removelist = new ArrayList<>();
                         SparseBooleanArray checkedItems = listView.getCheckedItemPositions();
                         for (int i = 0; i < checkedItems.size(); i++) {
                             int key = checkedItems.keyAt(i);
                             if (checkedItems.get(key)) {
-                                db.deleteHomeworkById(adapter.getItem(key));
-                                removelist.add(adapter.getHomeworkList().get(key));
+                                db.deleteTaskById(adapter.getItem(key));
+                                removelist.add(adapter.getTaskList().get(key));
                             }
                         }
-                        adapter.getHomeworkList().removeAll(removelist);
-                        db.updateHomework(adapter.getHomework());
+                        adapter.getTaskList().removeAll(removelist);
+                        db.updateTask(adapter.getTask());
                         adapter.notifyDataSetChanged();
                         mode.finish();
                         return true;
@@ -102,7 +102,7 @@ public class HomeworksActivity extends AppCompatActivity {
     }
 
     private void setupCustomDialog() {
-        final View alertLayout = getLayoutInflater().inflate(R.layout.dialog_add_homework, null);
-        AlertDialogsHelper.getAddHomeworkDialog(HomeworksActivity.this, alertLayout, adapter);
+        final View alertLayout = getLayoutInflater().inflate(R.layout.dialog_add_task, null);
+        AlertDialogsHelper.getAddHomeworkDialog(TasksActivity.this, alertLayout, adapter);
     }
 }

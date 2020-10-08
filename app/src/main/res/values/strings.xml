@@ -32,7 +32,7 @@
 
     <string name="add_subject">Add subject</string>
     <string name="edit_subject">Edit subject</string>
-    <string name="teacher">Teacher</string>
+    <string name="contact">Contact</string>
     <string name="room">Room</string>
     <string name="time">Time</string>
     <string name="save">Save</string>
@@ -40,7 +40,7 @@
     <string name="time_to_dialog">To:</string>
     <string name="time_from_dialog">From:</string>
     <string name="subject_dialog">Subject:</string>
-    <string name="teacher_dialog">Teacher:</string>
+    <string name="contact_dialog">Contact:</string>
     <string name="room_dialog">Room:</string>
     <string name="select_time">Select time</string>
     <string name="select_color">Select color</string>
@@ -48,17 +48,17 @@
     <string name="choose_date">Choose date</string>
     <string name="choose_color">Choose color</string>
 
-    <!-- Homeworks Activity strings -->
-    <string name="title_activity_homeworks">HomeworksActivity</string>
-    <string name="homeworks">Homeworks</string>
+    <!-- Tasks Activity strings -->
+    <string name="title_activity_tasks">TasksActivity</string>
+    <string name="tasks">Tasks</string>
     <string name="select_date">Select date</string>
     <string name="deadline_dialog">Deadline:</string>
     <string name="deadline">Deadline</string>
     <string name="description_dialog">Description:</string>
     <string name="desctiption">Desctiption</string>
     <string name="date_error">Date field can not be empty!</string>
-    <string name="edit_homework">Edit homework</string>
-    <string name="add_homework">Add homework</string>
+    <string name="edit_task">Edit task</string>
+    <string name="add_task">Add task</string>
     <string name="deadline_snackbar">"Deadline field can not be empty!</string>
     <string name="date">Date</string>
 
@@ -71,10 +71,10 @@
     <string name="title">Title</string>
     <string name="saved">Saved</string>
 
-    <!-- Teachers Activity strings -->
-    <string name="teachers">Teachers</string>
-    <string name="add_teacher">Add teacher</string>
-    <string name="edit_teacher">Edit teacher</string>
+    <!-- Contacts Activity strings -->
+    <string name="contacts">Contacts</string>
+    <string name="add_contact">Add contact</string>
+    <string name="edit_contact">Edit contact</string>
     <string name="name_dialog">Name:</string>
     <string name="post_dialog">Post:</string>
     <string name="phonenumber_dialog">Phone:</string>
@@ -84,9 +84,9 @@
     <string name="post">Post</string>
     <string name="email">Email</string>
 
-    <!-- Exams Activity strings -->
-    <string name="exams">Exams</string>
-    <string name="add_exam">Add exam</string>
+    <!-- Events Activity strings -->
+    <string name="events">Events</string>
+    <string name="add_exam">Add events</string>
     <string name="date_dialog">Date:</string>
     <string name="time_dialog">Time:</string>
 
