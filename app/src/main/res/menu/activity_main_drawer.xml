@@ -16,19 +16,19 @@
         android:checkableBehavior="none">
 
         <item
-            android:id="@+id/exams"
+            android:id="@+id/events"
             android:icon="@drawable/baseline_school_black_18"
-            android:title="@string/exams" />
+            android:title="@string/events" />
 
         <item
-            android:id="@+id/teachers"
+            android:id="@+id/contacts"
             android:icon="@drawable/baseline_people_black_18"
-            android:title="@string/teachers" />
+            android:title="@string/contact" />
 
         <item
-            android:id="@+id/homework"
+            android:id="@+id/tasks"
             android:icon="@drawable/baseline_book_black_18"
-            android:title="@string/homeworks" />
+            android:title="@string/tasks" />
         <item
             android:id="@+id/notes"
             android:icon="@drawable/baseline_event_note_black_18"

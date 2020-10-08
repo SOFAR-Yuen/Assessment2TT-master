@@ -6,22 +6,22 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
-import android.support.v7.preference.PreferenceManager;
-import android.text.TextUtils;
-import android.view.View;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
-
+import com.ulan.timetable.R;
 import com.ulan.timetable.adapters.FragmentsTabAdapter;
 import com.ulan.timetable.fragments.FridayFragment;
 import com.ulan.timetable.fragments.MondayFragment;
@@ -30,7 +30,6 @@ import com.ulan.timetable.fragments.SundayFragment;
 import com.ulan.timetable.fragments.ThursdayFragment;
 import com.ulan.timetable.fragments.TuesdayFragment;
 import com.ulan.timetable.fragments.WednesdayFragment;
-import com.ulan.timetable.R;
 import com.ulan.timetable.utils.AlertDialogsHelper;
 import com.ulan.timetable.utils.DailyReceiver;
 
@@ -183,17 +182,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Snackbar.make(navigationView, R.string.school_website_snackbar, Snackbar.LENGTH_SHORT).show();
                 }
                 return true;
-            case R.id.exams:
-                Intent exams = new Intent(MainActivity.this, ExamsActivity.class);
-                startActivity(exams);
+            case R.id.events:
+                Intent events = new Intent(MainActivity.this, EventsActivity.class);
+                startActivity(events);
                 return true;
-            case R.id.teachers:
-                Intent teacher = new Intent(MainActivity.this, TeachersActivity.class);
-                startActivity(teacher);
+            case R.id.contacts:
+                Intent contacts = new Intent(MainActivity.this, ContactsActivity.class);
+                startActivity(contacts);
                 return true;
-            case R.id.homework:
-                Intent homework = new Intent(MainActivity.this, HomeworksActivity.class);
-                startActivity(homework);
+            case R.id.tasks:
+                Intent tasks = new Intent(MainActivity.this, TasksActivity.class);
+                startActivity(tasks);
                 return true;
             case R.id.notes:
                 Intent note = new Intent(MainActivity.this, NotesActivity.class);

@@ -52,7 +52,7 @@ public class AlertDialogsHelper {
         final HashMap<Integer, EditText> editTextHashs = new HashMap<>();
         final EditText subject = alertLayout.findViewById(R.id.subject_dialog);
         editTextHashs.put(R.string.subject, subject);
-        final EditText teacher = alertLayout.findViewById(R.id.teacher_dialog);
+        final EditText teacher = alertLayout.findViewById(R.id.contact_dialog);
         editTextHashs.put(R.string.contact, teacher);
         final EditText room = alertLayout.findViewById(R.id.room_dialog);
         editTextHashs.put(R.string.room, room);
@@ -184,8 +184,8 @@ public class AlertDialogsHelper {
         final HashMap<Integer, EditText> editTextHashs = new HashMap<>();
         final EditText subject = alertLayout.findViewById(R.id.subject_dialog);
         editTextHashs.put(R.string.subject, subject);
-        final EditText teacher = alertLayout.findViewById(R.id.teacher_dialog);
-        editTextHashs.put(R.string.contact, teacher);
+        final EditText contact = alertLayout.findViewById(R.id.contact_dialog);
+        editTextHashs.put(R.string.contact, contact);
         final EditText room = alertLayout.findViewById(R.id.room_dialog);
         editTextHashs.put(R.string.room, room);
         final TextView from_time = alertLayout.findViewById(R.id.from_time);
@@ -282,7 +282,7 @@ public class AlertDialogsHelper {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(TextUtils.isEmpty(subject.getText()) || TextUtils.isEmpty(teacher.getText()) || TextUtils.isEmpty(room.getText())) {
+                if(TextUtils.isEmpty(subject.getText()) || TextUtils.isEmpty(contact.getText()) || TextUtils.isEmpty(room.getText())) {
                     for (Map.Entry<Integer, EditText> entry : editTextHashs.entrySet()) {
                         if(TextUtils.isEmpty(entry.getValue().getText())) {
                             entry.getValue().setError(activity.getResources().getString(entry.getKey()) + " " + activity.getResources().getString(R.string.field_error));
@@ -297,13 +297,13 @@ public class AlertDialogsHelper {
                     ColorDrawable buttonColor = (ColorDrawable) select_color.getBackground();
                     week.setSubject(subject.getText().toString());
                     week.setFragment(fragment.find() ? fragment.group() : null);
-                    week.setTeacher(teacher.getText().toString());
+                    week.setTeacher(contact.getText().toString());
                     week.setRoom(room.getText().toString());
                     week.setColor(buttonColor.getColor());
                     dbHelper.insertWeek(week);
                     adapter.notifyDataSetChanged();
                     subject.getText().clear();
-                    teacher.getText().clear();
+                    contact.getText().clear();
                     room.getText().clear();
                     from_time.setText(R.string.select_time);
                     to_time.setText(R.string.select_time);

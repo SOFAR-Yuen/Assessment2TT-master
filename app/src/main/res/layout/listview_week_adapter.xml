@@ -70,7 +70,7 @@
                 android:textSize="18sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline"
                 app:layout_constraintStart_toEndOf="@+id/roomimage"
-                app:layout_constraintTop_toBottomOf="@+id/teacher" />
+                app:layout_constraintTop_toBottomOf="@+id/contact" />
 
             <TextView
                 android:id="@+id/time"
@@ -86,7 +86,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/line"
                 app:layout_constraintStart_toEndOf="@+id/timeimage"
-                app:layout_constraintTop_toBottomOf="@+id/teacher"
+                app:layout_constraintTop_toBottomOf="@+id/contact"
                 app:layout_constraintVertical_bias="0.0" />
 
             <ImageView
@@ -95,7 +95,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="2dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/teacherimage"
+                app:layout_constraintStart_toStartOf="@+id/contactimage"
                 app:layout_constraintTop_toTopOf="@+id/room"
                 app:layout_constraintVertical_bias="0.263"
                 app:srcCompat="@drawable/baseline_room_black_24" />
@@ -119,20 +119,20 @@
                 app:layout_constraintGuide_percent="0.5" />
 
             <TextView
-                android:id="@+id/teacher"
+                android:id="@+id/contact"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="34dp"
-                android:text="@string/teacher"
+                android:text="@string/contact"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/teacherimage"
+                app:layout_constraintStart_toEndOf="@+id/contactimage"
                 app:layout_constraintTop_toBottomOf="@+id/line" />
 
             <ImageView
@@ -146,11 +146,11 @@
                 card_view:srcCompat="@drawable/baseline_expand_more_black_24" />
 
             <ImageView
-                android:id="@+id/teacherimage"
+                android:id="@+id/contactimage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="@+id/line"
-                app:layout_constraintTop_toTopOf="@+id/teacher"
+                app:layout_constraintTop_toTopOf="@+id/contact"
                 card_view:srcCompat="@drawable/baseline_person_black_24" />
 
 

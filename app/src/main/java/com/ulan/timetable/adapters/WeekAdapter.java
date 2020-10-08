@@ -71,7 +71,7 @@ public class WeekAdapter extends ArrayAdapter<Week> {
             convertView = inflater.inflate(mResource, parent, false);
             holder= new ViewHolder();
             holder.subject = convertView.findViewById(R.id.subject);
-            holder.teacher = convertView.findViewById(R.id.teacher);
+            holder.teacher = convertView.findViewById(R.id.contact);
             holder.time = convertView.findViewById(R.id.time);
             holder.room = convertView.findViewById(R.id.room);
             holder.popup = convertView.findViewById(R.id.popupbtn);
